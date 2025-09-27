@@ -1,11 +1,23 @@
 import http, { Server } from 'http'
 import app from './app'
 import { envVars } from './app/config/env'
+import { prisma } from './app/config/db'
 
 let server: Server | null = null
 
+const connectToDB = async () => {
+    try {
+        await prisma.$connect();
+        console.log("✅ DB connection successful");
+    } catch (error) {
+        console.error("❌ Error during DB connection:", error);
+        process.exit(1)
+    }
+}
+
 const startServer = async () => {
     try {
+        await connectToDB();
         server = http.createServer(app)
         server.listen(envVars.PORT, () => {
             console.log(`Server running on port http://localhost:${envVars.PORT}`)
