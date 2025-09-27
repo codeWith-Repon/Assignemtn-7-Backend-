@@ -7,7 +7,8 @@ dotenv.config();
 interface EnvConfig {
     PORT: string,
     NODE_ENV: string,
-    FRONTEND_URL: string
+    FRONTEND_URL: string,
+    BCRYPT_SALT_ROUND: string
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -15,6 +16,7 @@ const loadEnvVariables = (): EnvConfig => {
         'PORT',
         'NODE_ENV',
         'FRONTEND_URL',
+        "BCRYPT_SALT_ROUND"
     ];
 
     requiredEnvVariables.forEach((key) => {
@@ -26,7 +28,8 @@ const loadEnvVariables = (): EnvConfig => {
     return {
         PORT: process.env.PORT as string,
         NODE_ENV: process.env.NODE_ENV as string,
-        FRONTEND_URL: process.env.FRONTEND_URL as string
+        FRONTEND_URL: process.env.FRONTEND_URL as string,
+        BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string
     }
 }
 
