@@ -4,6 +4,7 @@ import bcryptjs from 'bcryptjs'
 import { envVars } from '../config/env'
 import AppError from '../errorHelpers/AppError'
 import { AuthProvider } from '../constants'
+import { excludeFields } from '../utils/excludeFields'
 
 const createUser = async (payload: Prisma.UserCreateInput) => {
     const { email, password, ...rest } = payload
@@ -43,7 +44,7 @@ const createUser = async (payload: Prisma.UserCreateInput) => {
         }
     })
 
-    return user
+    return excludeFields(user, ["password", "isVerified", "isDeleted", "isActive"])
 }
 
 export const userServices = {
