@@ -21,7 +21,7 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
                 email: verifiedToken.email
             }
         })
-        console.log(verifiedToken, "verify token from checkAuth")
+        // console.log(verifiedToken, "verify token from checkAuth")
 
         if (!isUserExist) throw new AppError(400, "User doesn't exist..")
 
@@ -29,7 +29,7 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
 
         if (!authRoles.includes(verifiedToken.role)) throw new AppError(400, "You are not permitted to view this route!!")
 
-        req.user = verifyToken
+        req.user = verifiedToken
         next()
     } catch (error) {
         next(error)
