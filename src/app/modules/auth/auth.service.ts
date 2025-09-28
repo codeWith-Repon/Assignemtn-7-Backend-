@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs"
 import { prisma } from "../../config/db"
 import AppError from "../../errorHelpers/AppError";
+import { createUserToken } from "../../utils/userToken";
 
 const credentialsLogin = async (email: string, password: string) => {
     const user = await prisma.user.findUnique({
@@ -15,7 +16,13 @@ const credentialsLogin = async (email: string, password: string) => {
 
     if (!isPasswordCorrect) throw new AppError(401, "Invalid credentials.");
 
-    return user
+    const userToken = createUserToken(user)
+
+    return {
+        accessToken: userToken.accessToken,
+        refreshToken: userToken.refreshToken,
+        user
+    }
 }
 
 export const authServices = {
