@@ -2,6 +2,7 @@ import http, { Server } from 'http'
 import app from './app'
 import { envVars } from './app/config/env'
 import { prisma } from './app/config/db'
+import { seedSuperAdmin } from './app/utils/seedSuperAdmin'
 
 let server: Server | null = null
 
@@ -18,6 +19,8 @@ const connectToDB = async () => {
 const startServer = async () => {
     try {
         await connectToDB();
+        await seedSuperAdmin();
+
         server = http.createServer(app)
         server.listen(envVars.PORT, () => {
             console.log(`Server running on port http://localhost:${envVars.PORT}`)
