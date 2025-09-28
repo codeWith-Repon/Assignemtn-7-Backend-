@@ -3,6 +3,11 @@ export const Role = {
     ADMIN: "ADMIN"
 }
 
+export enum RoleEnum {
+    USER = "USER",
+    ADMIN = "ADMIN"
+}
+
 export const AuthProvider = {
     GOOGLE: "google",
     FACEBOOK: "facebook",
