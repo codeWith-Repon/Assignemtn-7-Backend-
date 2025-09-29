@@ -1,6 +1,6 @@
 import { prisma } from "../config/db"
 
-export const generateSlug = async (title: string) => {
+export const generateSlug = async (title: string, model: string) => {
 
     const baseSlug = title
         .toLowerCase()
@@ -11,7 +11,16 @@ export const generateSlug = async (title: string) => {
     let slug = baseSlug
     let counter = 0
 
-    while (await prisma.post.findUnique({ where: { slug } })) {
+    const checkSlugExists = async (slug: string) => {
+        if (model === "post") {
+            return await prisma.post.findUnique({ where: { slug } })
+        } else if (model === "project") {
+            return await prisma.project.findUnique({ where: { slug } })
+        }
+        return null
+    }
+
+    while (await checkSlugExists(slug)) {
         slug = `${baseSlug}-${++counter}`
     }
 

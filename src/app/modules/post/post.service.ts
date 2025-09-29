@@ -7,7 +7,7 @@ import { generateSlug } from "../../utils/dynamicSlug"
 
 const createPost = async (payload: Prisma.PostCreateInput) => {
 
-    const slug = await generateSlug(payload.title)
+    const slug = await generateSlug(payload.title, "post")
 
     const post = await prisma.post.create({
         data: { ...payload, slug },
@@ -86,7 +86,7 @@ const updatePost = async (slug: string, payload: Partial<Prisma.PostUpdateInput>
     }
 
     if (typeof payload.title === "string") {
-        const newSlug = await generateSlug(payload.title)
+        const newSlug = await generateSlug(payload.title, "post")
         payload.slug = newSlug
     }
 
