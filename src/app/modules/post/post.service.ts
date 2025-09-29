@@ -2,11 +2,15 @@ import { Prisma } from "@prisma/client"
 import { prisma } from "../../config/db"
 import { excludeFields } from "../../utils/excludeFields"
 import AppError from "../../errorHelpers/AppError"
+import { generateSlug } from "../../utils/dynamicSlug"
 
 
 const createPost = async (payload: Prisma.PostCreateInput) => {
+
+    const slug = await generateSlug(payload.title)
+
     const post = await prisma.post.create({
-        data: payload,
+        data: { ...payload, slug },
         include: {
             author: true
         }
@@ -21,6 +25,9 @@ const getAllPost = async () => {
     const posts = await prisma.post.findMany({
         include: {
             author: true
+        },
+        orderBy: {
+            createdAt: "desc"
         }
     })
 
@@ -76,6 +83,11 @@ const updatePost = async (slug: string, payload: Partial<Prisma.PostUpdateInput>
 
     if (!post) {
         throw new AppError(404, "Post not found")
+    }
+
+    if (typeof payload.title === "string") {
+        const newSlug = await generateSlug(payload.title)
+        payload.slug = newSlug
     }
 
     const updatedPost = await prisma.post.update({
