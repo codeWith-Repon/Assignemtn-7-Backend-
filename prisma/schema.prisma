@@ -72,7 +72,7 @@ model Post {
 
 model Project {
   id           Int      @id @default(autoincrement())
-  title        String
+  title        String   @unique
   slug         String   @unique
   description  String?
   thumbnail    String
@@ -80,6 +80,7 @@ model Project {
   features     String[]
   liveUrl      String
   githubUrl    String?
+  isFeatured   Boolean  @default(false)
   ownerId      Int
   owner        User     @relation(fields: [ownerId], references: [id])
 
