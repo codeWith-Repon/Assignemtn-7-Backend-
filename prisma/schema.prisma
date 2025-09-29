@@ -29,6 +29,7 @@ model User {
 
   providers Provider[]
   posts     Post[]
+  projects  Project[]
 }
 
 enum Role {
@@ -64,6 +65,24 @@ model Post {
   tags        String[]
   authorId    Int
   author      User     @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id           Int      @id @default(autoincrement())
+  title        String   @unique
+  slug         String   @unique
+  description  String?
+  thumbnail    String
+  technologies String[]
+  features     String[]
+  liveUrl      String
+  githubUrl    String?
+  isFeatured   Boolean  @default(false)
+  ownerId      Int
+  owner        User     @relation(fields: [ownerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
