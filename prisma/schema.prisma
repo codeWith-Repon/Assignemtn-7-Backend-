@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(uuid())
+  id         Int     @id @default(autoincrement())
   name       String
   email      String  @unique
   password   String?
@@ -28,6 +28,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   providers Provider[]
+  posts     Post[]
 }
 
 enum Role {
@@ -41,11 +42,28 @@ enum Status {
 }
 
 model Provider {
-  id         String   @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   provider   String
   providerID String
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  content     Json
+  thumbnail   String?
+  isPublished Boolean  @default(false)
+  views       Int      @default(0)
+  featured    Boolean  @default(false)
+  tags        String[]
+  authorId    Int
+  author      User     @relation(fields: [authorId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
