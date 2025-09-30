@@ -79,7 +79,7 @@ model Project {
   technologies String[]
   features     String[]
   liveUrl      String
-  githubUrl    String?
+  githubUrls   Json?
   isFeatured   Boolean  @default(false)
   ownerId      Int
   owner        User     @relation(fields: [ownerId], references: [id])

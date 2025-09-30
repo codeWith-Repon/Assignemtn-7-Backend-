@@ -3,7 +3,7 @@ import z from "zod";
 export const addProjectZodSchema = z.object({
     title: z
         .string()
-        .min(5, "Title must be at least 3 characters"),
+        .min(5, "Title must be at least 5 characters"),
     description: z
         .string()
         .min(10, "Description must be at least 10 characters")
@@ -17,8 +17,11 @@ export const addProjectZodSchema = z.object({
         .array(z.string()),
     liveUrl: z
         .url("Live URL must be a valid URL"),
-    githubUrl: z
-        .url("Github URL must be a valid URL")
+    githubUrls: z
+        .object({
+            frontend: z.url("Frontend URL must be valid"),
+            backend: z.url("Backend URL must be valid"),
+        })
         .optional(),
     ownerId: z
         .number({ message: "Owner ID is required" }),
