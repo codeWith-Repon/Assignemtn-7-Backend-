@@ -4,6 +4,7 @@ import { Role } from "../../constants";
 import { projectController } from "./project.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { addProjectZodSchema, updateProjectZodSchema } from "./project.validation";
+import { multerUpload } from "../../config/multer.config";
 
 
 const router = Router()
@@ -11,6 +12,7 @@ const router = Router()
 
 router.post("/",
     checkAuth(Role.ADMIN),
+    multerUpload.array("files"),
     validateRequest(addProjectZodSchema),
     projectController.addProject
 )
@@ -22,6 +24,7 @@ router.get("/:slug",
 )
 router.patch("/:slug",
     checkAuth(Role.ADMIN),
+    multerUpload.array("files"),
     validateRequest(updateProjectZodSchema),
     projectController.updateProject
 )

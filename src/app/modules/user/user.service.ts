@@ -55,7 +55,7 @@ const getAllUser = async () => {
 const getUserById = async (id: string) => {
     const user = await prisma.user.findUnique({
         where: {
-            id
+            id: Number(id)
         }
     })
 
@@ -74,7 +74,7 @@ const updateUser = async (id: string, payload: Prisma.UserUpdateInput) => {
     }
     const user = await prisma.user.update({
         where: {
-            id
+            id: Number(id)
         },
         data: payload
     })
