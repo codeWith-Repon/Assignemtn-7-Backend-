@@ -8,8 +8,9 @@ export const addProjectZodSchema = z.object({
         .string()
         .min(10, "Description must be at least 10 characters")
         .optional(),
-    thumbnail: z
-        .url("Thumbnail must be a valid URL"),
+    thumbnail: z.
+        array(z.url("Thumbnail must be a valid URL"))
+        .optional(),
     technologies: z
         .array(z.string()),
     features: z

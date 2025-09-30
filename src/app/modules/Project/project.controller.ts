@@ -5,7 +5,13 @@ import { projectServices } from "./project.service";
 
 
 const addProject = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const result = await projectServices.addProject(req.body)
+
+    const payload = {
+        ...req.body,
+        thumbnail: (req.files as Express.Multer.File[]).map(file => file.path)
+    }
+
+    const result = await projectServices.addProject(payload)
 
     sendResponse(res, {
         success: true,
@@ -43,8 +49,18 @@ const getSingleProject = catchAsync(async (req: Request, res: Response, next: Ne
 
 const updateProject = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { slug } = req.params
-    const payload = req.body
+    const newThumbnails =
+        (req.files as Express.Multer.File[] | undefined)?.map((file) => file.path) || [];
 
+
+    const payload = {
+        ...req.body,
+    }
+
+    if (newThumbnails.length > 0) {
+        console.log("new file added")
+        payload.thumbnail = newThumbnails
+    }
 
     const result = await projectServices.updateProject(slug, payload)
 
