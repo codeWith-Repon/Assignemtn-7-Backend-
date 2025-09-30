@@ -40,7 +40,7 @@ const getUserById = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
-    const payload = req.body
+    const payload = { ...req.body, picture: req.file?.path }
 
     const users = await userServices.updateUser(id, payload)
 

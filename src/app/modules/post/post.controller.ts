@@ -5,7 +5,11 @@ import { sendResponse } from "../../utils/sendResponse";
 
 
 const createPost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const result = await postServices.createPost(req.body)
+    const payload = {
+        ...req.body,
+        thumbnail: req.file?.path
+    }
+    const result = await postServices.createPost(payload)
 
     sendResponse(res, {
         success: true,
@@ -42,7 +46,15 @@ const getSinglePost = catchAsync(async (req: Request, res: Response, next: NextF
 const updatePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
     const { slug } = req.params
-    const payload = req.body
+    const newThumbnails = req.file?.path
+
+    const payload = {
+        ...req.body,
+    }
+
+    if (req.file) {
+        payload.thumbnail = newThumbnails
+    }
 
     const result = await postServices.updatePost(slug, payload)
 
