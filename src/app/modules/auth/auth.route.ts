@@ -9,6 +9,9 @@ const router = Router()
 router.post("/login",
     authController.credentialsLogin
 )
+router.post("/logout",
+    authController.logOut
+)
 
 router.get("/me",
     checkAuth(...Object.values(Role)),
