@@ -75,7 +75,7 @@ model Project {
   title        String   @unique
   slug         String   @unique
   description  String?
-  thumbnail    String
+  thumbnail    String[]
   technologies String[]
   features     String[]
   liveUrl      String
