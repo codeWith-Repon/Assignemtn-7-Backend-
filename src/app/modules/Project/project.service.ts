@@ -6,6 +6,16 @@ import { excludeFields } from "../../utils/excludeFields"
 
 const addProject = async (payload: Prisma.ProjectCreateInput) => {
 
+    const isProjectExist = await prisma.project.findUnique({
+        where: {
+            title: payload.title.trim()
+        }
+    })
+
+    if (isProjectExist) {
+        throw new AppError(400, "Project already exist")
+    }
+
     const slug = await generateSlug(payload.title, "project")
 
     const project = await prisma.project.create({
