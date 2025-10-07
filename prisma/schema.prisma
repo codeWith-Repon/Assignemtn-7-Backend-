@@ -72,10 +72,10 @@ model Post {
 
 model Project {
   id           Int      @id @default(autoincrement())
-  title        String   @unique
+  title        String   
   slug         String   @unique
   description  String?
-  thumbnail    String[]
+  thumbnails    String[]
   technologies String[]
   features     String[]
   liveUrl      String

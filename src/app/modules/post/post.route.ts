@@ -11,7 +11,7 @@ const router = Router()
 
 
 router.post("/",
-    checkAuth(Role.ADMIN),
+    // checkAuth(Role.ADMIN),
     multerUpload.single("file"),
     validateRequest(addPostZodSchema),
     postController.createPost
@@ -23,7 +23,7 @@ router.get("/:slug",
     postController.getSinglePost
 )
 router.patch("/:slug",
-    checkAuth(Role.ADMIN),
+    // checkAuth(Role.ADMIN),
     multerUpload.single("file"),
     validateRequest(updatePostZodSchema),
     postController.updatePost

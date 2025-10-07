@@ -8,26 +8,21 @@ export const addProjectZodSchema = z.object({
         .string()
         .min(10, "Description must be at least 10 characters")
         .optional(),
-    thumbnail: z.
-        array(z.url("Thumbnail must be a valid URL"))
-        .optional(),
+    thumbnails: z.array(z.string().url()).optional(),
     technologies: z
         .array(z.string()),
     features: z
         .array(z.string()),
-    liveUrl: z
-        .url("Live URL must be a valid URL"),
+    liveUrl: z.string().url("Live URL must be a valid URL"),
     githubUrls: z
         .object({
-            frontend: z.url("Frontend URL must be valid"),
-            backend: z.url("Backend URL must be valid"),
+            frontend: z.string().url("Frontend URL must be valid"),
+            backend: z.string().url("Backend URL must be valid"),
         })
         .optional(),
-    ownerId: z
-        .number({ message: "Owner ID is required" }),
-    isFeatured: z
-        .boolean()
-        .optional()
+    // ownerId: z
+    //     .number({ message: "Owner ID is required" }),
+    isFeatured: z.string().optional(),
 })
 
 export const updateProjectZodSchema = z.object({

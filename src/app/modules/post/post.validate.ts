@@ -10,7 +10,6 @@ export const addPostZodSchema = z.object({
             message: "Content must be a valid JSON object or array",
         }),
     thumbnail: z
-        .string()
         .url("Thumbnail must be a valid URL")
         .optional(),
     isPublished: z

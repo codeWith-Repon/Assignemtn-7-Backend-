@@ -11,7 +11,7 @@ const router = Router()
 
 
 router.post("/",
-    checkAuth(Role.ADMIN),
+    // checkAuth(Role.ADMIN),
     multerUpload.array("files"),
     validateRequest(addProjectZodSchema),
     projectController.addProject

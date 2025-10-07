@@ -8,7 +8,8 @@ const addProject = catchAsync(async (req: Request, res: Response, next: NextFunc
 
     const payload = {
         ...req.body,
-        thumbnail: (req.files as Express.Multer.File[]).map(file => file.path)
+        ownerId: 1,
+        thumbnails: (req.files as Express.Multer.File[]).map(file => file.path)
     }
 
     const result = await projectServices.addProject(payload)
