@@ -9,7 +9,11 @@ import { prisma } from "../config/db";
 export const checkAuth = (...authRoles: string[]) => async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const accessToken = req.headers.authorization || req.cookies.accessToken
+        let accessToken = req.headers.authorization || req.cookies.accessToken
+
+        if (accessToken.startsWith("Bearer ")) {
+            accessToken = accessToken.split(" ")[1]
+        }
 
         if (!accessToken) throw new AppError(403, "No Token Received.")
 

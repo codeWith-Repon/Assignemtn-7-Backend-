@@ -28,12 +28,26 @@ const addProject = async (payload: Prisma.ProjectCreateInput) => {
     return project
 }
 
-const getAllProject = async () => {
+const getAllProject = async ({
+    page,
+    limit,
+    isFeatured,
+}: {
+    page: number,
+    limit: number,
+    isFeatured?: boolean
+}) => {
+    const skip = (page - 1) * limit
 
     const projects = await prisma.project.findMany({
         include: {
             owner: true
         },
+        where: {
+            isFeatured
+        },
+        skip,
+        take: limit,
         orderBy: {
             createdAt: "desc"
         }
@@ -46,7 +60,22 @@ const getAllProject = async () => {
         return project
     })
 
-    return projects
+    const total = await prisma.project.count({
+        where: {
+            isFeatured
+        }
+    })
+    const totalPages = Math.ceil(total / limit)
+
+    return {
+        meta: {
+            page,
+            limit,
+            totalPage: totalPages,
+            total
+        },
+        data: projects
+    }
 }
 
 const getSingleProject = async (slug: string) => {

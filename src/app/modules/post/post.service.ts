@@ -21,11 +21,21 @@ const createPost = async (payload: Prisma.PostCreateInput) => {
     return post
 }
 
-const getAllPost = async () => {
+const getAllPost = async ({ page, limit, isPublished }: { page: number, limit: number, isPublished?: boolean }) => {
+
+    const where: any = {}
+
+    if (typeof isPublished === "boolean") {
+        where.isPublished = isPublished
+    }
+
     const posts = await prisma.post.findMany({
         include: {
             author: true
         },
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
         orderBy: {
             createdAt: "desc"
         }
@@ -38,8 +48,18 @@ const getAllPost = async () => {
         return post
     })
 
+    const total = await prisma.post.count({ where })
+    const totalPages = Math.ceil(total / limit)
 
-    return sanitizedPosts
+    return {
+        meta: {
+            page,
+            limit,
+            totalPage: totalPages,
+            total
+        },
+        data: posts
+    }
 }
 
 const getSinglePost = async (slug: string) => {

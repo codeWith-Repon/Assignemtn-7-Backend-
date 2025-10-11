@@ -25,11 +25,14 @@ const addProject = catchAsync(async (req: Request, res: Response, next: NextFunc
 
 const getAllProject = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const result = await projectServices.getAllProject()
-
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || 10
+    const isFeatured = req.query.isFeatured ? req.query.isFeatured === "true" : undefined
+    const result = await projectServices.getAllProject({ page, limit, isFeatured })
+   
     sendResponse(res, {
         success: true,
-        statusCode: 201,
+        statusCode: 200,
         message: "Project fetched successfully",
         data: result
     })
